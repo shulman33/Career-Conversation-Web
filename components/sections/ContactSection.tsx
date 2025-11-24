@@ -102,7 +102,7 @@ export function ContactSection({ contact }: ContactSectionProps) {
                     href={`mailto:${contact.email}`}
                     className="flex items-center gap-4 text-foreground hover:text-cyan transition-colors group"
                   >
-                    <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-cyan/10 text-cyan group-hover:scale-110 transition-transform">
+                    <div className="flex items-center justify-center w-12 h-12 shrink-0 rounded-lg bg-cyan/10 text-cyan group-hover:scale-110 transition-transform">
                       <Mail className="h-6 w-6" />
                     </div>
                     <div>
@@ -116,7 +116,7 @@ export function ContactSection({ contact }: ContactSectionProps) {
                       href={`tel:${contact.phone}`}
                       className="flex items-center gap-4 text-foreground hover:text-purple transition-colors group"
                     >
-                      <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-purple/10 text-purple group-hover:scale-110 transition-transform">
+                      <div className="flex items-center justify-center w-12 h-12 shrink-0 rounded-lg bg-purple/10 text-purple group-hover:scale-110 transition-transform">
                         <Phone className="h-6 w-6" />
                       </div>
                       <div>
@@ -127,8 +127,8 @@ export function ContactSection({ contact }: ContactSectionProps) {
                   )}
 
                   {contact.location && (
-                    <div className="flex items-center gap-4 text-foreground">
-                      <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-pink/10 text-pink">
+                    <div className="flex items-center gap-4 text-foreground group">
+                      <div className="flex items-center justify-center w-12 h-12 shrink-0 rounded-lg bg-pink/10 text-pink group-hover:scale-110 transition-transform">
                         <MapPin className="h-6 w-6" />
                       </div>
                       <div>

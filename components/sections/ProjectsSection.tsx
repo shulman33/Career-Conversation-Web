@@ -163,12 +163,12 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                     </CardContent>
 
                     {(project.demoUrl || project.githubUrl || project.longDescription) && (
-                      <CardFooter className="gap-3 flex-col sm:flex-row sm:flex-wrap">
+                      <CardFooter className="gap-3 flex-col sm:flex-row">
                         {project.longDescription && (
                           <Button
                             variant="outline"
                             size="sm"
-                            className="touch-target w-full sm:w-auto sm:flex-1"
+                            className="touch-target w-full sm:w-auto"
                             onClick={() => setExpandedProject(project._id)}
                           >
                             <BookOpen className="mr-2 h-4 w-4" />
@@ -179,7 +179,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                           <Button
                             variant="outline"
                             size="sm"
-                            className="touch-target w-full sm:w-auto sm:flex-1"
+                            className="touch-target w-full sm:w-auto"
                             asChild
                           >
                             <a
@@ -196,7 +196,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                           <Button
                             variant="outline"
                             size="sm"
-                            className="touch-target w-full sm:w-auto sm:flex-1"
+                            className="touch-target w-full sm:w-auto"
                             asChild
                           >
                             <a
