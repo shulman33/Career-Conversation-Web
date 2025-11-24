@@ -7,7 +7,14 @@ import { WavyLines } from "@/components/decorative/WavyLines"
 
 const GRADIO_URL = "https://shulman33-career-conversation.hf.space"
 
-export function ChatbotSection() {
+interface ChatbotSectionProps {
+  gradioEmbedUrl?: string | null
+}
+
+export function ChatbotSection({ gradioEmbedUrl }: ChatbotSectionProps) {
+  // Use Sanity CMS URL if available, otherwise fallback to hardcoded URL
+  const embedUrl = gradioEmbedUrl || GRADIO_URL
+
   return (
     <>
       {/* Wavy section divider */}
@@ -60,10 +67,10 @@ export function ChatbotSection() {
               transition={{ duration: 0.6, delay: 0.3 }}
             >
               <GradioEmbed
-                spaceUrl={GRADIO_URL}
+                spaceUrl={embedUrl}
                 title="career-conversation.ai"
                 accentColor="cyan"
-                className="shadow-2xl"
+                className="shadow-2xl [&_iframe]:h-[50vh] [&_iframe]:min-h-[500px] [&_iframe]:md:h-[600px]"
               />
             </motion.div>
 

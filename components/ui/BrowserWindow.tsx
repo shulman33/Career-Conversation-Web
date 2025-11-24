@@ -11,6 +11,10 @@ interface BrowserWindowProps {
   accentColor?: AccentColor;
   children: ReactNode;
   className?: string;
+  /** Hide decorative controls on mobile for cleaner UI */
+  mobileSimplified?: boolean;
+  /** Remove padding from content area */
+  noPadding?: boolean;
 }
 
 const ACCENT_COLOR_MAP: Record<AccentColor, string> = {
@@ -26,6 +30,8 @@ export function BrowserWindow({
   accentColor = "cyan",
   children,
   className = "",
+  mobileSimplified = false,
+  noPadding = false,
 }: BrowserWindowProps) {
   const accentBg = ACCENT_COLOR_MAP[accentColor];
 
@@ -38,9 +44,16 @@ export function BrowserWindow({
       )}
     >
       {/* Window Title Bar */}
-      <div className={cn("flex items-center justify-between px-4 py-3 border-b-4 border-memphis-black", accentBg)}>
+      <div className={cn(
+        "flex items-center justify-between border-b-4 border-memphis-black",
+        mobileSimplified ? "px-3 py-2 md:px-4 md:py-3" : "px-4 py-3",
+        accentBg
+      )}>
         {/* Control Buttons */}
-        <div className="flex items-center gap-2">
+        <div className={cn(
+          "flex items-center gap-2",
+          mobileSimplified && "hidden md:flex"
+        )}>
           <button
             className="w-4 h-4 rounded-full bg-memphis-yellow border-2 border-memphis-black hover:opacity-80 transition-opacity"
             aria-label="Minimize"
@@ -62,16 +75,27 @@ export function BrowserWindow({
         </div>
 
         {/* Window Title */}
-        <div className="flex-1 text-center">
-          <span className="text-sm font-bold text-memphis-black tracking-tight">{title}</span>
+        <div className={cn(
+          "flex-1 text-center",
+          mobileSimplified && "md:flex-initial"
+        )}>
+          <span className={cn(
+            "font-bold text-memphis-black tracking-tight",
+            mobileSimplified ? "text-xs md:text-sm" : "text-sm"
+          )}>{title}</span>
         </div>
 
-        {/* Spacer for symmetry */}
-        <div className="w-[76px]" />
+        {/* Spacer for symmetry (hidden on mobile if simplified) */}
+        <div className={cn(
+          "w-[76px]",
+          mobileSimplified && "hidden md:block"
+        )} />
       </div>
 
       {/* Window Content */}
-      <div className="p-6">{children}</div>
+      <div className={cn(
+        noPadding ? "" : mobileSimplified ? "p-3 md:p-6" : "p-6"
+      )}>{children}</div>
     </div>
   );
 }

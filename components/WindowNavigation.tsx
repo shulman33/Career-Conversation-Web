@@ -3,7 +3,6 @@
 import * as React from "react"
 import { motion } from "motion/react"
 import { BrowserWindow } from "@/components/ui/BrowserWindow"
-import { Logo } from "@/components/Logo"
 import { cn } from "@/lib/utils"
 
 type MemphisColor = "cyan" | "pink" | "yellow" | "purple" | "orange"
@@ -63,12 +62,7 @@ export function WindowNavigation({
   }
 
   return (
-    <nav className={cn("relative w-full", className)}>
-      {/* Logo */}
-      <div className="flex justify-center mb-8 md:mb-12">
-        <Logo name="Sam Shulman" />
-      </div>
-
+    <nav className={cn("relative w-full pt-3 md:pt-6", className)}>
       {/* Desktop: Overlapping windows */}
       <div className="hidden md:flex md:items-center md:justify-center md:gap-6 md:flex-wrap md:px-4">
         {items.map((item, index) => (
@@ -95,10 +89,11 @@ export function WindowNavigation({
             }}
           >
             <BrowserWindow
+              title={item.label}
               accentColor={item.accentColor}
-              className="w-32 h-20 cursor-pointer"
+              className="w-64 h-24 cursor-pointer"
             >
-              <div className="flex items-center justify-center h-full">
+              <div className="flex items-center justify-center h-full -m-6 py-2">
                 <span className="text-sm font-bold text-foreground">
                   {item.label}
                 </span>
@@ -108,8 +103,8 @@ export function WindowNavigation({
         ))}
       </div>
 
-      {/* Mobile: Stacked windows */}
-      <div className="flex flex-col gap-3 md:hidden">
+      {/* Mobile: Compact navigation */}
+      <div className="flex flex-col gap-2 px-4 md:hidden">
         {items.map((item, index) => (
           <motion.div
             key={item.id}
@@ -128,11 +123,13 @@ export function WindowNavigation({
             }}
           >
             <BrowserWindow
+              title={item.label}
               accentColor={item.accentColor}
-              className="w-full h-16"
+              className="w-full h-12"
+              mobileSimplified={true}
             >
-              <div className="flex items-center justify-center h-full">
-                <span className="text-base font-bold text-foreground">
+              <div className="flex items-center justify-center h-full -my-3">
+                <span className="text-sm font-bold text-foreground">
                   {item.label}
                 </span>
               </div>

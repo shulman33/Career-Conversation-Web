@@ -1,20 +1,30 @@
 "use client"
 
-import { motion } from "motion/react"
-import { ExternalLink, Github } from "lucide-react"
+import { useState } from "react"
+import { motion, AnimatePresence } from "motion/react"
+import { ExternalLink, Github, BookOpen, X } from "lucide-react"
+import Image from "next/image"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { PortableText } from "@portabletext/react"
 
 interface Project {
   _id: string
   title: string
   description: string
-  longDescription?: string
+  longDescription?: any
   technologies: string[]
   featured: boolean
   demoUrl: string | null
   githubUrl: string | null
+  images?: Array<{
+    asset: {
+      url: string
+    }
+    alt?: string
+    caption?: string
+  }>
 }
 
 interface ProjectsSectionProps {
@@ -24,6 +34,8 @@ interface ProjectsSectionProps {
 const accentColors = ["pink", "purple", "orange", "cyan", "yellow"] as const
 
 export function ProjectsSection({ projects }: ProjectsSectionProps) {
+  const [expandedProject, setExpandedProject] = useState<string | null>(null)
+
   // Show featured projects first
   const sortedProjects = [...projects].sort((a, b) => {
     if (a.featured && !b.featured) return -1
@@ -71,6 +83,28 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
           </div>
 
           {/* Projects Grid */}
+          {sortedProjects.length === 0 ? (
+            <div className="max-w-2xl mx-auto p-6 bg-yellow-50 border-2 border-yellow-400 rounded-lg">
+              <h3 className="text-xl font-bold text-yellow-900 mb-2">
+                No Projects Found
+              </h3>
+              <p className="text-yellow-800 mb-4">
+                No project content has been created in Sanity Studio yet.
+              </p>
+              <div className="bg-white p-4 rounded border border-yellow-300">
+                <p className="text-sm text-gray-700 mb-2">
+                  To add projects:
+                </p>
+                <ol className="list-decimal list-inside text-gray-700 space-y-1 text-sm">
+                  <li>Visit <a href="/studio" className="text-blue-600 underline">/studio</a></li>
+                  <li>Click "Projects" in the sidebar</li>
+                  <li>Create a new project with title, description, and technologies</li>
+                  <li>Mark it as "Featured" to display it here</li>
+                  <li>Publish the document</li>
+                </ol>
+              </div>
+            </div>
+          ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {sortedProjects.map((project, index) => {
               const accentColor = accentColors[index % accentColors.length]
@@ -91,6 +125,19 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                   }}
                 >
                   <Card accent={accentColor} className="h-full flex flex-col">
+                    {/* Project Image */}
+                    {project.images && project.images.length > 0 && (
+                      <div className="relative w-full h-48 overflow-hidden rounded-t-lg">
+                        <Image
+                          src={project.images[0].asset.url}
+                          alt={project.images[0].alt || project.title}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        />
+                      </div>
+                    )}
+
                     <CardHeader>
                       <CardTitle className="flex items-start justify-between gap-2">
                         <span className="flex-1">{project.title}</span>
@@ -115,8 +162,19 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                       </div>
                     </CardContent>
 
-                    {(project.demoUrl || project.githubUrl) && (
-                      <CardFooter className="gap-2">
+                    {(project.demoUrl || project.githubUrl || project.longDescription) && (
+                      <CardFooter className="gap-2 flex-wrap">
+                        {project.longDescription && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="flex-1 touch-target"
+                            onClick={() => setExpandedProject(project._id)}
+                          >
+                            <BookOpen className="mr-2 h-4 w-4" />
+                            Read More
+                          </Button>
+                        )}
                         {project.demoUrl && (
                           <Button
                             variant="outline"
@@ -158,8 +216,98 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
               )
             })}
           </div>
+          )}
         </motion.div>
       </div>
+
+      {/* Project Detail Modal */}
+      <AnimatePresence>
+        {expandedProject && (() => {
+          const project = sortedProjects.find(p => p._id === expandedProject)
+          if (!project || !project.longDescription) return null
+
+          return (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+              onClick={() => setExpandedProject(null)}
+            >
+              <motion.div
+                initial={{ scale: 0.95, y: 20 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.95, y: 20 }}
+                className="relative w-full max-w-3xl max-h-[80vh] overflow-y-auto bg-background rounded-lg shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="sticky top-0 z-10 flex items-center justify-between p-6 bg-background border-b">
+                  <h3 className="text-2xl font-bold">{project.title}</h3>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setExpandedProject(null)}
+                  >
+                    <X className="h-5 w-5" />
+                  </Button>
+                </div>
+
+                <div className="p-6 space-y-6">
+                  {project.images && project.images.length > 0 && (
+                    <div className="relative w-full h-64 rounded-lg overflow-hidden">
+                      <Image
+                        src={project.images[0].asset.url}
+                        alt={project.images[0].alt || project.title}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
+
+                  <div className="prose prose-sm max-w-none dark:prose-invert">
+                    <PortableText value={project.longDescription} />
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    {project.technologies.map((tech) => (
+                      <Badge key={tech} variant="outline">
+                        {tech}
+                      </Badge>
+                    ))}
+                  </div>
+
+                  <div className="flex gap-3 pt-4">
+                    {project.demoUrl && (
+                      <Button variant="cyan" asChild>
+                        <a
+                          href={project.demoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <ExternalLink className="mr-2 h-4 w-4" />
+                          View Demo
+                        </a>
+                      </Button>
+                    )}
+                    {project.githubUrl && (
+                      <Button variant="outline" asChild>
+                        <a
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Github className="mr-2 h-4 w-4" />
+                          View Code
+                        </a>
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          )
+        })()}
+      </AnimatePresence>
     </section>
   )
 }

@@ -5,14 +5,34 @@ import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { BrowserWindow } from "@/components/ui/BrowserWindow"
 import { FloatingSparkles } from "@/components/decorative/FloatingSparkles"
+import { urlFor } from "@/sanity/image"
 
 interface HeroSectionProps {
   name: string
   tagline: string
   chatbotCta: string
+  professionalPhoto?: {
+    asset: {
+      _id: string
+      url: string
+    }
+    alt?: string
+    hotspot?: {
+      x: number
+      y: number
+      height: number
+      width: number
+    }
+    crop?: {
+      top: number
+      bottom: number
+      left: number
+      right: number
+    }
+  }
 }
 
-export function HeroSection({ name, tagline, chatbotCta }: HeroSectionProps) {
+export function HeroSection({ name, tagline, chatbotCta, professionalPhoto }: HeroSectionProps) {
   const handleScrollToChatbot = () => {
     const chatbotSection = document.getElementById("chatbot")
     if (chatbotSection) {
@@ -34,7 +54,7 @@ export function HeroSection({ name, tagline, chatbotCta }: HeroSectionProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="space-y-6 sm:space-y-8 text-center lg:text-left order-2 lg:order-1"
+            className="space-y-6 sm:space-y-8 text-center lg:text-left order-1"
           >
             <div className="space-y-4">
               <motion.h1
@@ -96,19 +116,33 @@ export function HeroSection({ name, tagline, chatbotCta }: HeroSectionProps) {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="order-1 lg:order-2"
+            className="order-2 max-w-md mx-auto lg:max-w-none"
           >
-            <BrowserWindow accentColor="yellow" title="professional-profile.jpg">
+            <BrowserWindow accentColor="yellow" title="professional-profile.jpg" mobileSimplified={true}>
               <div className="aspect-square bg-linear-to-br from-yellow/20 via-orange/20 to-pink/20 flex items-center justify-center">
-                {/* Placeholder for professional photo */}
-                <div className="text-center space-y-4 p-8">
-                  <div className="w-48 h-48 mx-auto rounded-full bg-linear-to-br from-cyan via-purple to-pink flex items-center justify-center text-white text-6xl font-bold shadow-lg">
-                    {name.split(" ").map((n) => n[0]).join("")}
+                {professionalPhoto?.asset ? (
+                  <img
+                    src={urlFor(professionalPhoto)
+                      .width(1200)
+                      .height(1200)
+                      .fit('crop')
+                      .auto('format')
+                      .quality(90)
+                      .url()}
+                    alt={professionalPhoto.alt || `Professional photo of ${name}`}
+                    className="w-full h-full object-cover"
+                    loading="eager"
+                  />
+                ) : (
+                  <div className="text-center space-y-4 p-8">
+                    <div className="w-48 h-48 mx-auto rounded-full bg-linear-to-br from-cyan via-purple to-pink flex items-center justify-center text-white text-6xl font-bold shadow-lg">
+                      {name.split(" ").map((n) => n[0]).join("")}
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Professional photo will be added via Sanity CMS
+                    </p>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    Professional photo will be added via Sanity CMS
-                  </p>
-                </div>
+                )}
               </div>
             </BrowserWindow>
           </motion.div>

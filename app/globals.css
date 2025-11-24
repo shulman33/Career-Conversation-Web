@@ -181,11 +181,21 @@
     }
   }
 
-  /* Better tap targets for touch devices */
-  @media (hover: none) {
-    .touch-target {
+  /* Better tap targets for touch devices and mobile viewports */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Ensure buttons have adequate spacing on mobile */
+  @media (max-width: 768px) {
+    button:not(.no-touch-spacing) {
       min-height: 44px;
-      min-width: 44px;
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
     }
   }
 }

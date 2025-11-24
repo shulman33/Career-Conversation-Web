@@ -36,6 +36,7 @@ export const FEATURED_PROJECTS_QUERY = defineQuery(`
     title,
     slug,
     description,
+    longDescription,
     technologies[]-> {
       _id,
       name,

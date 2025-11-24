@@ -13,6 +13,13 @@ interface ContactInfo {
   githubUrl?: string
   twitterUrl?: string
   location?: string
+  resumeFile?: {
+    asset: {
+      url: string
+      originalFilename?: string
+    }
+    title?: string
+  } | null
 }
 
 interface ContactSectionProps {
@@ -163,21 +170,28 @@ export function ContactSection({ contact }: ContactSectionProps) {
                   </div>
                 )}
 
-                <Separator />
-
                 {/* Resume Download */}
-                <div className="space-y-4">
-                  <p className="text-sm font-semibold text-muted-foreground">
-                    Download resume
-                  </p>
-                  <Button variant="outline" size="lg" className="w-full sm:w-auto">
-                    <Download className="mr-2 h-5 w-5" />
-                    Download Resume (PDF)
-                  </Button>
-                  <p className="text-xs text-muted-foreground">
-                    Resume file will be added via Sanity CMS
-                  </p>
-                </div>
+                {contact.resumeFile?.asset?.url && (
+                  <>
+                    <Separator />
+                    <div className="space-y-4">
+                      <p className="text-sm font-semibold text-muted-foreground">
+                        Download resume
+                      </p>
+                      <Button variant="outline" size="lg" className="w-full sm:w-auto" asChild>
+                        <a
+                          href={contact.resumeFile.asset.url}
+                          download
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Download className="mr-2 h-5 w-5" />
+                          {contact.resumeFile.title || 'Download Resume (PDF)'}
+                        </a>
+                      </Button>
+                    </div>
+                  </>
+                )}
               </div>
             </BrowserWindow>
           </motion.div>

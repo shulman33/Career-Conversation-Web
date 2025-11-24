@@ -1,6 +1,7 @@
 "use client"
 
 import { motion } from "motion/react"
+import Image from "next/image"
 import { BrowserWindow } from "@/components/ui/BrowserWindow"
 import { Badge } from "@/components/ui/badge"
 import { Code2, Database, Cloud, Cpu, Wrench, Palette } from "lucide-react"
@@ -9,6 +10,14 @@ interface Technology {
   name: string
   category: string
   proficiencyLevel: string
+  icon?: {
+    asset: {
+      url: string
+    }
+    alt?: string
+  } | null
+  iconIdentifier?: string | null
+  description?: string | null
 }
 
 interface TechStackSectionProps {
@@ -94,6 +103,27 @@ export function TechStackSection({
           </div>
 
           {/* Technology Categories Grid */}
+          {technologies.length === 0 ? (
+            <div className="max-w-2xl mx-auto p-6 bg-yellow-50 border-2 border-yellow-400 rounded-lg">
+              <h3 className="text-xl font-bold text-yellow-900 mb-2">
+                No Technologies Found
+              </h3>
+              <p className="text-yellow-800 mb-4">
+                No technology content has been created in Sanity Studio yet.
+              </p>
+              <div className="bg-white p-4 rounded border border-yellow-300">
+                <p className="text-sm text-gray-700 mb-2">
+                  To add technologies:
+                </p>
+                <ol className="list-decimal list-inside text-gray-700 space-y-1 text-sm">
+                  <li>Visit <a href="/studio" className="text-blue-600 underline">/studio</a></li>
+                  <li>Click "Technologies" in the sidebar</li>
+                  <li>Create a new technology with name, category, and proficiency level</li>
+                  <li>Publish the document</li>
+                </ol>
+              </div>
+            </div>
+          ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {categories.map((category, categoryIndex) => {
               const color = categoryColors[category as keyof typeof categoryColors] || "cyan"
@@ -134,8 +164,20 @@ export function TechStackSection({
                             <Badge
                               key={tech.name}
                               variant={badgeVariant || "default"}
-                              className="text-sm"
+                              className="text-sm flex items-center gap-1.5"
+                              title={tech.description || undefined}
                             >
+                              {tech.icon?.asset?.url && (
+                                <div className="relative w-4 h-4">
+                                  <Image
+                                    src={tech.icon.asset.url}
+                                    alt={tech.icon.alt || tech.name}
+                                    fill
+                                    className="object-contain"
+                                    sizes="16px"
+                                  />
+                                </div>
+                              )}
                               {tech.name}
                             </Badge>
                           )
@@ -147,6 +189,7 @@ export function TechStackSection({
               )
             })}
           </div>
+          )}
 
           {/* Legend */}
           <motion.div

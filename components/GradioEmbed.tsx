@@ -63,6 +63,7 @@ export function GradioEmbed({
     <BrowserWindow
       accentColor={accentColor}
       className={cn("w-full", className)}
+      mobileSimplified={true}
     >
       <div className="w-full overflow-hidden rounded-b-lg">
         <iframe
