@@ -251,7 +251,7 @@ export async function GET(request: Request) {
                     display: 'flex',
                   }}
                 >
-                  samshulman.com
+                  samjshulman.com
                 </div>
               </div>
             </div>
