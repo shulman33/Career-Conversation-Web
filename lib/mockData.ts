@@ -14,7 +14,7 @@ export const mockProjects = [
     longDescription: "Built with LangChain and deployed on Hugging Face Spaces, this AI assistant provides personalized career guidance through natural language conversations.",
     technologies: ["Python", "LangChain", "Hugging Face", "Gradio"],
     featured: true,
-    demoUrl: "https://huggingface.co/spaces/shulman33/career_conversation",
+    demoUrl: "https://shulman33-career-conversation.hf.space",
     githubUrl: "https://github.com/shulman33/career-conversation",
   },
   {

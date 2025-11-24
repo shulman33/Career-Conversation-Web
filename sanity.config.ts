@@ -2,6 +2,7 @@ import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
 import { schemas } from './sanity/schemas'
+import { structure } from './sanity/structure'
 
 export default defineConfig({
   name: 'default',
@@ -13,7 +14,7 @@ export default defineConfig({
   basePath: '/studio',
 
   plugins: [
-    structureTool(),
+    structureTool({ structure }),
     visionTool(),
   ],
 

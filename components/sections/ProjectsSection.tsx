@@ -54,7 +54,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
               className="text-3xl sm:text-4xl lg:text-5xl font-bold"
             >
               Featured{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink via-purple to-orange">
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-pink via-purple to-orange">
                 Projects
               </span>
             </motion.h2>
@@ -78,11 +78,17 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
               return (
                 <motion.div
                   key={project._id}
+                  className="touch-feedback h-full"
                   initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   whileHover={{ y: -8, transition: { duration: 0.2 } }}
+                  whileTap={{ scale: 0.98 }}
+                  style={{
+                    willChange: "transform, opacity",
+                    transform: "translateZ(0)",
+                  }}
                 >
                   <Card accent={accentColor} className="h-full flex flex-col">
                     <CardHeader>
@@ -115,7 +121,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                           <Button
                             variant="outline"
                             size="sm"
-                            className="flex-1"
+                            className="flex-1 touch-target"
                             asChild
                           >
                             <a
@@ -132,7 +138,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                           <Button
                             variant="outline"
                             size="sm"
-                            className="flex-1"
+                            className="flex-1 touch-target"
                             asChild
                           >
                             <a

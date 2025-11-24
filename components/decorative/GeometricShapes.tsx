@@ -59,6 +59,8 @@ export function GeometricShapes({ count = 8, animated = true }: { count?: number
             top: `${shape.y}%`,
             width: shape.size,
             height: shape.size,
+            willChange: "transform",
+            transform: "translateZ(0)",
           }}
           initial={{ scale: 0, rotate: 0 }}
           animate={

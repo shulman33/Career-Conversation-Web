@@ -3,6 +3,7 @@
 import * as React from "react"
 import { motion } from "motion/react"
 import { BrowserWindow } from "@/components/ui/BrowserWindow"
+import { Logo } from "@/components/Logo"
 import { cn } from "@/lib/utils"
 
 type MemphisColor = "cyan" | "pink" | "yellow" | "purple" | "orange"
@@ -54,15 +55,30 @@ export function WindowNavigation({
     }
   }
 
+  const handleKeyDown = (event: React.KeyboardEvent, item: NavItem) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      handleClick(item)
+    }
+  }
+
   return (
     <nav className={cn("relative w-full", className)}>
+      {/* Logo */}
+      <div className="flex justify-center mb-8 md:mb-12">
+        <Logo name="Sam Shulman" />
+      </div>
+
       {/* Desktop: Overlapping windows */}
-      <div className="hidden md:flex md:items-center md:justify-center md:gap-4 md:flex-wrap">
+      <div className="hidden md:flex md:items-center md:justify-center md:gap-6 md:flex-wrap md:px-4">
         {items.map((item, index) => (
-          <motion.button
+          <motion.div
             key={item.id}
             onClick={() => handleClick(item)}
-            className="relative"
+            onKeyDown={(e) => handleKeyDown(e, item)}
+            role="button"
+            tabIndex={0}
+            className="relative touch-feedback cursor-pointer"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1, duration: 0.3 }}
@@ -74,6 +90,8 @@ export function WindowNavigation({
             whileTap={{ scale: 0.95 }}
             style={{
               zIndex: items.length - index,
+              willChange: "transform",
+              transform: "translateZ(0)",
             }}
           >
             <BrowserWindow
@@ -86,21 +104,28 @@ export function WindowNavigation({
                 </span>
               </div>
             </BrowserWindow>
-          </motion.button>
+          </motion.div>
         ))}
       </div>
 
       {/* Mobile: Stacked windows */}
       <div className="flex flex-col gap-3 md:hidden">
         {items.map((item, index) => (
-          <motion.button
+          <motion.div
             key={item.id}
             onClick={() => handleClick(item)}
-            className="w-full"
+            onKeyDown={(e) => handleKeyDown(e, item)}
+            role="button"
+            tabIndex={0}
+            className="w-full touch-feedback touch-target cursor-pointer"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.1, duration: 0.3 }}
             whileTap={{ scale: 0.98 }}
+            style={{
+              willChange: "transform",
+              transform: "translateZ(0)",
+            }}
           >
             <BrowserWindow
               accentColor={item.accentColor}
@@ -112,7 +137,7 @@ export function WindowNavigation({
                 </span>
               </div>
             </BrowserWindow>
-          </motion.button>
+          </motion.div>
         ))}
       </div>
     </nav>

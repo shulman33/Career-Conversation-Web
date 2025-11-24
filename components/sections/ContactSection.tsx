@@ -64,7 +64,7 @@ export function ContactSection({ contact }: ContactSectionProps) {
               className="text-3xl sm:text-4xl lg:text-5xl font-bold"
             >
               Get in{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple via-pink to-orange">
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-purple via-pink to-orange">
                 Touch
               </span>
             </motion.h2>

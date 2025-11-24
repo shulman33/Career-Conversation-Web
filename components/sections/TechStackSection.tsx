@@ -77,7 +77,7 @@ export function TechStackSection({
               className="text-3xl sm:text-4xl lg:text-5xl font-bold"
             >
               Tech{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan via-purple to-pink">
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-cyan via-purple to-pink">
                 Stack
               </span>
             </motion.h2>

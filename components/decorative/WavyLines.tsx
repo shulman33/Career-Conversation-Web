@@ -39,6 +39,10 @@ export function WavyLines({
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className={className}
+        style={{
+          willChange: "transform, opacity",
+          transform: "translateZ(0)",
+        }}
         initial={{ pathLength: 0, opacity: 0 }}
         whileInView={{ pathLength: 1, opacity: 1 }}
         viewport={{ once: false, margin: "-100px" }}
@@ -75,6 +79,10 @@ export function WavyLines({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
+      style={{
+        willChange: "transform, opacity",
+        transform: "translateZ(0)",
+      }}
       initial={{ pathLength: 0, opacity: 0 }}
       whileInView={{ pathLength: 1, opacity: 1 }}
       viewport={{ once: false, margin: "-100px" }}

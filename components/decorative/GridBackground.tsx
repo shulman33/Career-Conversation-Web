@@ -57,6 +57,8 @@ export function GridBackground() {
           style={{
             left: dot.x - 4,
             top: dot.y - 4,
+            willChange: "transform, opacity",
+            transform: "translateZ(0)",
           }}
           initial={{ scale: 0, opacity: 0 }}
           animate={{

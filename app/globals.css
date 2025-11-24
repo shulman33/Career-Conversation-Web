@@ -59,6 +59,14 @@
   --color-memphis-orange-light: oklch(0.80 0.17 45);
   --color-memphis-orange-dark: oklch(0.60 0.23 45);
   --color-memphis-black: oklch(0.10 0 0);
+
+  /* Map standard color names to Memphis colors for gradient utilities */
+  /* Direct OKLCH values for gradient support in Tailwind v4 */
+  --color-cyan: oklch(0.78 0.15 195);
+  --color-purple: oklch(0.60 0.22 290);
+  --color-pink: oklch(0.70 0.25 330);
+  --color-orange: oklch(0.70 0.20 45);
+  --color-yellow: oklch(0.85 0.18 95);
 }
 
 :root {
@@ -136,5 +144,48 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Touch Device Support */
+@layer utilities {
+  /* Only apply hover effects on devices that support hover */
+  @media (hover: hover) {
+    .hover-lift:hover {
+      transform: translateY(-4px);
+    }
+
+    .hover-scale:hover {
+      transform: scale(1.05);
+    }
+
+    .hover-rotate:hover {
+      transform: rotate(2deg);
+    }
+  }
+
+  /* Enhanced touch feedback for all devices */
+  .touch-feedback {
+    transition: transform 0.1s ease, opacity 0.1s ease;
+  }
+
+  .touch-feedback:active {
+    transform: scale(0.95);
+    opacity: 0.9;
+  }
+
+  /* Disable hover animations on touch devices */
+  @media (hover: none) {
+    .no-hover-on-touch:hover {
+      transform: none !important;
+    }
+  }
+
+  /* Better tap targets for touch devices */
+  @media (hover: none) {
+    .touch-target {
+      min-height: 44px;
+      min-width: 44px;
+    }
   }
 }

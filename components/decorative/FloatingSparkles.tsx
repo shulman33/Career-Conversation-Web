@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 interface Sparkle {
   id: string;
@@ -23,6 +23,8 @@ const SPARKLE_COLORS = [
 
 export function FloatingSparkles({ count = 15 }: { count?: number }) {
   const [sparkles, setSparkles] = useState<Sparkle[]>([]);
+  const [isInView, setIsInView] = useState(true);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const newSparkles: Sparkle[] = Array.from({ length: count }, (_, i) => ({
@@ -38,8 +40,35 @@ export function FloatingSparkles({ count = 15 }: { count?: number }) {
     setSparkles(newSparkles);
   }, [count]);
 
+  // Viewport-aware optimization: pause animations when not visible
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setIsInView(entry.isIntersecting);
+        });
+      },
+      {
+        threshold: 0.1, // Trigger when 10% of the component is visible
+        rootMargin: "100px", // Start observing 100px before entering viewport
+      }
+    );
+
+    observer.observe(container);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   return (
-    <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+    <div
+      ref={containerRef}
+      className="fixed inset-0 -z-10 overflow-hidden pointer-events-none"
+    >
       {sparkles.map((sparkle) => (
         <motion.div
           key={sparkle.id}
@@ -47,17 +76,27 @@ export function FloatingSparkles({ count = 15 }: { count?: number }) {
           style={{
             left: `${sparkle.x}%`,
             top: `${sparkle.y}%`,
+            willChange: "transform, opacity",
+            transform: "translateZ(0)",
           }}
           initial={{ opacity: 0, y: 0, rotate: 0 }}
-          animate={{
-            opacity: [0, 1, 1, 0],
-            y: [-20, -40, -60, -80],
-            rotate: [0, 90, 180, 270],
-          }}
+          animate={
+            isInView
+              ? {
+                  opacity: [0, 1, 1, 0],
+                  y: [-20, -40, -60, -80],
+                  rotate: [0, 90, 180, 270],
+                }
+              : {
+                  opacity: 0,
+                  y: 0,
+                  rotate: 0,
+                }
+          }
           transition={{
             duration: sparkle.duration,
             delay: sparkle.delay,
-            repeat: Infinity,
+            repeat: isInView ? Infinity : 0,
             ease: "easeInOut",
           }}
         >

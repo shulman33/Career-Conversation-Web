@@ -5,7 +5,7 @@ import { BrowserWindow } from "@/components/ui/BrowserWindow"
 import { GradioEmbed } from "@/components/GradioEmbed"
 import { WavyLines } from "@/components/decorative/WavyLines"
 
-const GRADIO_URL = "https://huggingface.co/spaces/shulman33/career_conversation"
+const GRADIO_URL = "https://shulman33-career-conversation.hf.space"
 
 export function ChatbotSection() {
   return (
@@ -35,7 +35,7 @@ export function ChatbotSection() {
                 className="text-3xl sm:text-4xl lg:text-5xl font-bold"
               >
                 Career{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan via-purple to-pink">
+                <span className="text-transparent bg-clip-text bg-linear-to-r from-cyan via-purple to-pink">
                   Conversation
                 </span>
               </motion.h2>

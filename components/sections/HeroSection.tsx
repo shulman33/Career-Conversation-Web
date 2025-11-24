@@ -44,7 +44,7 @@ export function HeroSection({ name, tagline, chatbotCta }: HeroSectionProps) {
                 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight"
               >
                 Hi, I'm{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan via-purple to-pink">
+                <span className="text-transparent bg-clip-text bg-linear-to-r from-cyan via-purple to-pink">
                   {name}
                 </span>
               </motion.h1>
@@ -99,10 +99,10 @@ export function HeroSection({ name, tagline, chatbotCta }: HeroSectionProps) {
             className="order-1 lg:order-2"
           >
             <BrowserWindow accentColor="yellow" title="professional-profile.jpg">
-              <div className="aspect-square bg-gradient-to-br from-yellow/20 via-orange/20 to-pink/20 flex items-center justify-center">
+              <div className="aspect-square bg-linear-to-br from-yellow/20 via-orange/20 to-pink/20 flex items-center justify-center">
                 {/* Placeholder for professional photo */}
                 <div className="text-center space-y-4 p-8">
-                  <div className="w-48 h-48 mx-auto rounded-full bg-gradient-to-br from-cyan via-purple to-pink flex items-center justify-center text-white text-6xl font-bold shadow-lg">
+                  <div className="w-48 h-48 mx-auto rounded-full bg-linear-to-br from-cyan via-purple to-pink flex items-center justify-center text-white text-6xl font-bold shadow-lg">
                     {name.split(" ").map((n) => n[0]).join("")}
                   </div>
                   <p className="text-sm text-muted-foreground">
