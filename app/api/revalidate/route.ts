@@ -47,7 +47,8 @@ export async function POST(req: NextRequest) {
     }
 
     // Revalidate all pages with this document type tag
-    revalidateTag(body._type, 'max')
+    // Using 'seconds' profile for near-immediate updates
+    revalidateTag(body._type, 'seconds')
 
     const message = `Revalidated tag: ${body._type}`
     console.log(message, {
