@@ -49,27 +49,40 @@ export default async function Home() {
   console.log('================================')
 
   // Transform Sanity data to match component expectations
-  const transformedProjects = (projects || []).map((project) => ({
+  const transformedProjects = (projects || []).map((project: any) => ({
     _id: project._id,
     title: project.title || 'Untitled Project',
     description: project.description || '',
     longDescription: project.longDescription,
     technologies: (project.technologies || [])
-      .map((tech) => tech?.name)
-      .filter((name): name is string => name != null),
+      .map((tech: any) => tech?.name)
+      .filter((name: any): name is string => name != null),
     featured: true, // Featured projects query only returns featured projects
     demoUrl: project.demoUrl,
     githubUrl: project.githubUrl,
-    images: project.images || [],
+    images: (project.images || [])
+      .filter((img: any) => img?.asset?.url)
+      .map((img: any) => ({
+        asset: {
+          url: img.asset.url,
+        },
+        alt: img.alt,
+        caption: img.caption,
+      })),
   }))
 
   const transformedTechnologies = (technologies || [])
-    .filter((tech) => tech.name) // Filter out any technologies without a name
-    .map((tech) => ({
+    .filter((tech: any) => tech.name) // Filter out any technologies without a name
+    .map((tech: any) => ({
       name: tech.name!,
       category: tech.category || 'tools',
       proficiencyLevel: tech.proficiencyLevel || 'intermediate',
-      icon: tech.icon,
+      icon: tech.icon?.asset?.url ? {
+        asset: {
+          url: tech.icon.asset.url,
+        },
+        alt: tech.icon.alt,
+      } : null,
       iconIdentifier: tech.iconIdentifier,
       description: tech.description,
     }))
@@ -90,7 +103,15 @@ export default async function Home() {
             name={hero.name}
             tagline={hero.tagline}
             chatbotCta={hero.chatbotCta}
-            professionalPhoto={hero.professionalPhoto}
+            professionalPhoto={hero.professionalPhoto?.asset?.url ? {
+              asset: {
+                _id: hero.professionalPhoto.asset._id,
+                url: hero.professionalPhoto.asset.url,
+              },
+              alt: hero.professionalPhoto.alt || undefined,
+              hotspot: hero.professionalPhoto.hotspot || undefined,
+              crop: hero.professionalPhoto.crop || undefined,
+            } : undefined}
           />
         ) : (
           <section className="container mx-auto px-4 py-20">

@@ -8,7 +8,7 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC?style=flat&logo=tailwind-css)](https://tailwindcss.com/)
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed-Vercel-black?style=flat&logo=vercel)](https://vercel.com)
 
-[🚀 **View Live Demo**](#) | [🤖 **AI Backend Repository**](https://github.com/shulman33/Career-Conversation-Agent)
+[🚀 **View Live**](#) | [🤖 **AI Backend Repository**](https://github.com/shulman33/Career-Conversation-Agent)
 
 ---
 
@@ -280,7 +280,7 @@ career-landing-page/
 ## 🔗 Related Links
 
 - **[AI Chatbot Backend Repository](https://github.com/shulman33/Career-Conversation-Agent)** - Full source code and documentation for the intelligent agent
-- **[Live Demo](#)** - View the deployed landing page
+- **[Live Site](#)** - View the deployed landing page
 - **[Sanity CMS](https://www.sanity.io/)** - Learn about the headless CMS powering this site
 
 ---

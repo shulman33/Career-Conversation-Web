@@ -7,6 +7,8 @@ import { BrowserWindow } from "@/components/ui/BrowserWindow"
 import { FloatingSparkles } from "@/components/decorative/FloatingSparkles"
 import { urlFor } from "@/sanity/image"
 
+import type { SanityImageHotspot, SanityImageCrop } from '@/sanity.types'
+
 interface HeroSectionProps {
   name: string
   tagline: string
@@ -17,18 +19,8 @@ interface HeroSectionProps {
       url: string
     }
     alt?: string
-    hotspot?: {
-      x: number
-      y: number
-      height: number
-      width: number
-    }
-    crop?: {
-      top: number
-      bottom: number
-      left: number
-      right: number
-    }
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
   }
 }
 
