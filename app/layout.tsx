@@ -4,6 +4,7 @@ import "./globals.css";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { SITE_SETTINGS_QUERY } from "@/sanity/queries/siteSettings";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,22 +37,20 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       type: "website",
       locale: "en_US",
-      ...(siteSettings?.ogImage?.asset?.url && {
-        images: [
-          {
-            url: siteSettings.ogImage.asset.url,
-            alt: siteSettings.ogImage.alt || title,
-          },
-        ],
-      }),
+      images: [
+        {
+          url: '/api/og',
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      ...(siteSettings?.ogImage?.asset?.url && {
-        images: [siteSettings.ogImage.asset.url],
-      }),
+      images: ['/api/og'],
     },
     ...(siteSettings?.favicon?.asset?.url && {
       icons: {
@@ -81,6 +80,7 @@ export default async function RootLayout({
           <GoogleAnalytics measurementId={siteSettings.googleAnalyticsId} />
         )}
         {children}
+        <SpeedInsights />
       </body>
     </html>
   );
