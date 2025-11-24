@@ -1,4 +1,4 @@
-import { revalidateTag } from 'next/cache'
+import { revalidateTag, revalidatePath } from 'next/cache'
 import { type NextRequest, NextResponse } from 'next/server'
 import { parseBody } from 'next-sanity/webhook'
 
@@ -49,6 +49,10 @@ export async function POST(req: NextRequest) {
     // Revalidate all pages with this document type tag
     // Using 'seconds' profile for near-immediate updates
     revalidateTag(body._type, 'seconds')
+
+    // Clear Router Cache to ensure immediate updates
+    // This fixes the Next.js limitation where Route Handlers don't immediately invalidate Router Cache
+    revalidatePath('/', 'layout')
 
     const message = `Revalidated tag: ${body._type}`
     console.log(message, {
