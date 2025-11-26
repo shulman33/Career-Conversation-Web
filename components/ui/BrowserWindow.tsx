@@ -13,6 +13,8 @@ interface BrowserWindowProps {
   className?: string;
   /** Hide decorative controls on mobile for cleaner UI */
   mobileSimplified?: boolean;
+  /** Always hide controls - for compact nav buttons */
+  hideControls?: boolean;
   /** Remove padding from content area */
   noPadding?: boolean;
 }
@@ -31,6 +33,7 @@ export function BrowserWindow({
   children,
   className = "",
   mobileSimplified = false,
+  hideControls = false,
   noPadding = false,
 }: BrowserWindowProps) {
   const accentBg = ACCENT_COLOR_MAP[accentColor];
@@ -52,7 +55,8 @@ export function BrowserWindow({
         {/* Control Buttons */}
         <div className={cn(
           "flex items-center gap-2",
-          mobileSimplified && "hidden md:flex"
+          hideControls && "hidden",
+          !hideControls && mobileSimplified && "hidden md:flex"
         )}>
           <button
             className="w-4 h-4 rounded-full bg-memphis-yellow border-2 border-memphis-black hover:opacity-80 transition-opacity"
@@ -88,7 +92,8 @@ export function BrowserWindow({
         {/* Spacer for symmetry (hidden on mobile if simplified) */}
         <div className={cn(
           "w-[76px]",
-          mobileSimplified && "hidden md:block"
+          hideControls && "hidden",
+          !hideControls && mobileSimplified && "hidden md:block"
         )} />
       </div>
 

@@ -63,8 +63,8 @@ export function WindowNavigation({
 
   return (
     <nav className={cn("relative w-full pt-3 md:pt-6", className)}>
-      {/* Desktop: Overlapping windows */}
-      <div className="hidden md:flex md:items-center md:justify-center md:gap-6 md:flex-wrap md:px-4">
+      {/* Desktop (xl+): Full overlapping windows with decorations */}
+      <div className="hidden xl:flex xl:items-center xl:justify-center xl:gap-6 xl:flex-wrap xl:px-4">
         {items.map((item, index) => (
           <motion.div
             key={item.id}
@@ -91,19 +91,53 @@ export function WindowNavigation({
             <BrowserWindow
               title={item.label}
               accentColor={item.accentColor}
-              className="w-64 h-24 cursor-pointer"
+              className="w-48 cursor-pointer whitespace-nowrap"
+              noPadding={true}
             >
-              <div className="flex items-center justify-center h-full -m-6 py-2">
-                <span className="text-sm font-bold text-foreground">
-                  {item.label}
-                </span>
-              </div>
+              <span className="sr-only">{item.label}</span>
             </BrowserWindow>
           </motion.div>
         ))}
       </div>
 
-      {/* Mobile: Compact navigation */}
+      {/* Tablet (md to xl): Compact single-row horizontal nav */}
+      <div className="hidden md:flex xl:hidden items-center justify-center gap-3 px-4">
+        {items.map((item, index) => (
+          <motion.div
+            key={item.id}
+            onClick={() => handleClick(item)}
+            onKeyDown={(e) => handleKeyDown(e, item)}
+            role="button"
+            tabIndex={0}
+            className="flex-1 max-w-[140px] touch-feedback cursor-pointer"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1, duration: 0.3 }}
+            whileHover={{
+              scale: 1.05,
+              zIndex: 10,
+            }}
+            whileTap={{ scale: 0.95 }}
+            style={{
+              zIndex: items.length - index,
+              willChange: "transform",
+              transform: "translateZ(0)",
+            }}
+          >
+            <BrowserWindow
+              title={item.label}
+              accentColor={item.accentColor}
+              className="w-full cursor-pointer"
+              hideControls={true}
+              noPadding={true}
+            >
+              <span className="sr-only">{item.label}</span>
+            </BrowserWindow>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Mobile: Compact vertical navigation */}
       <div className="flex flex-col gap-2 px-4 md:hidden">
         {items.map((item, index) => (
           <motion.div
@@ -125,14 +159,11 @@ export function WindowNavigation({
             <BrowserWindow
               title={item.label}
               accentColor={item.accentColor}
-              className="w-full h-12"
-              mobileSimplified={true}
+              className="w-full"
+              hideControls={true}
+              noPadding={true}
             >
-              <div className="flex items-center justify-center h-full -my-3">
-                <span className="text-sm font-bold text-foreground">
-                  {item.label}
-                </span>
-              </div>
+              <span className="sr-only">{item.label}</span>
             </BrowserWindow>
           </motion.div>
         ))}
